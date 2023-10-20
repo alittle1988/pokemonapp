@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Yuji+Hentaigana+Akari&display=swap');
+
+
+
+/* Header Section */
+
+.title {
+  font-family: 'Yuji Hentaigana akari' ;
+  border-bottom: 2px solid black;
+}
+
+
+
+/* PokeCard Section */
+
+.cardImg {
+  width: 200px;
+  height: 250px;
+}
+
