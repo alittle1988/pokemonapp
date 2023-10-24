@@ -1,30 +1,29 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
-import PokeCard from "./PokeCard";
+import { Container} from "react-bootstrap";
+import PokeCardBack from "./PokeCardBack";
 
 function PokeList(props) {
-  const { allPokemon } = props;
-  return (
-    <Container>
-      <Row>
-        {allPokemon.length > 0 ? (
-          <h1 className="text-center">
-            You have caught {allPokemon.length} Pokemon!
-          </h1>
-        ) : (
-          <h1 className="text-center">You Have no Pokemon!</h1>
-        )}
-      </Row>
-      <Row >
-        {allPokemon.map((pokemon, index) => {
-          return (
-            <Col md={3} className="align-items-stretch mb-5" key={index}>
-              <PokeCard pokemon={pokemon} />
-            </Col>
-          );
-        })}
-      </Row>
+  const { playerCards, player, onCardSelect } = props;
+
+  return (<>
+
+    <Container className="d-flex">
+      {playerCards.map((card, index) => {
+        return (
+          <>
+            <PokeCardBack
+              onCardSelect={onCardSelect}
+              card={card}
+              key={index}
+              index={index}
+              player={player}
+            />
+          </>
+        );
+      })}
     </Container>
-  );
+ </> );
 }
+
+
 
 export default PokeList;
