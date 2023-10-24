@@ -9,28 +9,21 @@ import { Container } from "react-bootstrap";
 
 function App() {
   const [player1, setPlayer1] = useState("");
-  const [player2, setPlayer2] = useState("");
   const [player1Cards, setPlayer1Cards] = useState([]);
   const [player2Cards, setPlayer2Cards] = useState([]);
   const [isPlayerSet, setIsPlayerSet] = useState(false);
   const [player1PlayCard, setPlayer1PlayCard] = useState();
   const [player2PlayCard, setPlayer2PlayCard] = useState();
-
+  const [isCardSelected, setIsCardSelected] = useState(false);
 
   // handles player1 Name Change
   function handleP1NameChange(name) {
     setPlayer1(name);
   }
 
-  //handles player2 name change
-  function handleP2NameChange(name) {
-    setPlayer2(name);
-  }
-
   // handles player name submit form
   function handlePlayerSetForm() {
     setIsPlayerSet(true);
-    
   }
 
   // handles random card fetch from api
@@ -52,28 +45,39 @@ function App() {
 
   //handles player 1 card select click
   function handlePlayer1CardSelect(card) {
-    
-    setPlayer1PlayCard(card);
+    if (!isCardSelected) {
+      setPlayer1PlayCard(card);
+      if (isCardSelected === false) {
+        setPlayer2Cards(handleCompSelect());
+      }
+      let newArray = player1Cards.filter((item) => {
+        return item !== card;
+      });
+      setPlayer1Cards(newArray);
+      setIsCardSelected(true);
+    }
   }
 
-  // handles player 2 card select click
-  function handlePlayer2CardSelect(card){
-    setPlayer2PlayCard(card)
+  function handleCompSelect() {
+    let RandNum = Math.floor(Math.random() * player2Cards.length);
+    let selectedCard = player2Cards[RandNum];
+    setPlayer2PlayCard(selectedCard);
+    let newArray = player2Cards.filter((item) => {
+      return item !== selectedCard;
+    });
+    return newArray;
   }
-  console.log(player1PlayCard, player2PlayCard)
 
   return (
     <>
       <Container className="appContainer" fluid>
         <Header
           player1={player1}
-          player2={player2}
           onP1NameChange={handleP1NameChange}
-          onP2NameChange={handleP2NameChange}
           isPlayerSet={isPlayerSet}
           onPlayerSet={handlePlayerSetForm}
         ></Header>
-        
+
         <Row className="justify-content-center mt-4">
           {player1Cards.length === 0 ? (
             <Button
@@ -94,7 +98,6 @@ function App() {
               playerCards={player1Cards}
               player={1}
               onCardSelect={handlePlayer1CardSelect}
-              
             />
           </Col>
           <Col md={3}>
@@ -112,8 +115,12 @@ function App() {
             )}
           </Col>
           <Col md={3} className="align-right">
-            <h3 className="text-end me-5">{player2}</h3>
-            <PokeList playerCards={player2Cards} player={2} onCardSelect={handlePlayer2CardSelect} />
+            <h3 className="text-end me-5">Pokemon King</h3>
+            <PokeList
+              playerCards={player2Cards}
+              player={2}
+              onCardSelect={null}
+            />
           </Col>
         </Row>
       </Container>
